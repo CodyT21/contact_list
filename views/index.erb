@@ -1,0 +1,7 @@
+<ul id="contacts">
+  <% @contacts.each do |contact_id, contact_info| %>
+    <li><%= contact_info[:name] %></li>
+  <% end %>
+</ul>
+
+<a href="/new">New Contact</a>
