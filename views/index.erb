@@ -3,7 +3,7 @@
     <li>
       <h4>Contact ID: <%= contact_id %></h4>
       <ul>
-        <li>Contact Name: <%= contact_info[:first_name] + ' ' + contact_info[:last_name] %></li>
+        <li>Contact Name: <%= contact_info[:first_name].capitalize + ' ' + contact_info[:last_name].capitalize %></li>
         <li>Phone Number: <%=  contact_info[:phone_number] %></li>
         <li>Email Address: <%= contact_info[:email_address] %></li>
       </ul>
