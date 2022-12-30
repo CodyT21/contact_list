@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
   </head>
   <body>
+    <% if session[:message] %>
+      <p class="message"><%= session.delete(:message) %></p>
+    <% end %>
     <main>
       <%== yield %>
     </main>
