@@ -80,3 +80,33 @@ post '/contacts/:contact_id/destroy' do
 
   redirect '/contacts'
 end
+
+# render edit contact page
+get '/contacts/:contact_id/edit' do
+  @contact_id = params[:contact_id].to_i
+  @contact = session[:contacts][@contact_id]
+
+  erb :edit_contact
+end
+
+# update contact info
+post '/contacts/:contact_id' do
+  @contact_id = params[:contact_id].to_i
+  @contact = session[:contacts][@contact_id]
+  fname = params[:first_name].strip
+  lname = params[:last_name].strip
+  phone = params[:phone_number].strip
+  email = params[:email_address].strip
+
+  updated_contact = {first_name: fname, last_name: lname, phone_number: phone, email_address: email}
+  error = valid_contact?(updated_contact)
+  
+  if error
+    session[:message] = error
+    erb :edit_contact
+  else
+    session[:contacts][@contact_id] = updated_contact
+    session[:message] = 'The contact has been updated successfully.'
+    redirect '/contacts'
+  end
+end

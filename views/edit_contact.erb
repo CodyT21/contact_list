@@ -1,0 +1,27 @@
+<header>
+  <h2>Editing Contact: <%= @contact[:first_name] + ' ' + @contact[:last_name] %></h2>
+</header>
+
+<form action="/contacts/@contact_id" method="post">
+  <dl>
+    <dd>
+      <label for="first_name">Edit first name:</label>
+      <input name="first_name" type="text" value="<%= @contact[:first_name] %>">
+    </dd>
+    <dd>
+      <label for="last_name">Edit last name:</label>
+      <input name="last_name" type="text" value="<%= @contact[:last_name] %>">
+    </dd>
+    <dd>
+      <label for="phone_number">Edit phone number:</label>
+      <input name="phone_number" type="text" value="<%= @contact[:phone_number] %>">
+    </dd>
+    <dd>
+      <label for="email_address">Edit email address:</label>
+      <input name="email_address" type="text" value="<%= @contact[:email_address] %>">
+    </dd>
+  </dl>
+
+  <input type="submit" value="Save">
+  <a href="/contacts">Cancel</a>
+</form>
