@@ -71,3 +71,12 @@ post '/contacts' do
     redirect '/contacts'
   end
 end
+
+# delete contact fromn contact list
+post '/contacts/:contact_id/destroy' do
+  contact_id = params[:contact_id].to_i
+  session[:contacts].delete_at(contact_id)
+  session[:message] = 'The contact has been deleted.'
+
+  redirect '/contacts'
+end
