@@ -58,8 +58,12 @@ post '/contacts' do
   lname = params[:last_name].strip
   phone = params[:phone_number].strip
   email = params[:email_address].strip
+  group = params[:group_name] == '' ? nil : params[:group_name]
 
-  contact = {first_name: fname, last_name: lname, phone_number: phone, email_address: email}
+  contact = { first_name: fname, last_name: lname, 
+              phone_number: phone, email_address: email,
+              group_name: group
+            }
   error = valid_contact?(contact)
   
   if error
@@ -97,8 +101,12 @@ post '/contacts/:contact_id' do
   lname = params[:last_name].strip
   phone = params[:phone_number].strip
   email = params[:email_address].strip
+  group = params[:group_name] == '' ? nil : params[:group_name]
 
-  updated_contact = {first_name: fname, last_name: lname, phone_number: phone, email_address: email}
+  updated_contact = { first_name: fname, last_name: lname, 
+                      phone_number: phone, email_address: email,
+                      group_name: group
+                    }
   error = valid_contact?(updated_contact)
   
   if error

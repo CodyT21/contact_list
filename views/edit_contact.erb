@@ -2,7 +2,7 @@
   <h2>Editing Contact: <%= @contact[:first_name] + ' ' + @contact[:last_name] %></h2>
 </header>
 
-<form action="/contacts/@contact_id" method="post">
+<form action="/contacts/<%= @contact_id %>" method="post">
   <dl>
     <dd>
       <label for="first_name">Edit first name:</label>
@@ -20,6 +20,9 @@
       <label for="email_address">Edit email address:</label>
       <input name="email_address" type="text" value="<%= @contact[:email_address] %>">
     </dd>
+    <dd>
+      <label for="group_name">Edit group:</label>
+      <input name="group_name" type="text" value="<%= @contact[:group_name] %>"
   </dl>
 
   <input type="submit" value="Save">

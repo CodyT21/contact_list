@@ -5,14 +5,17 @@
       <ul>
         <li>Phone Number: <%=  contact_info[:phone_number] %></li>
         <li>Email Address: <%= contact_info[:email_address] %></li>
-        <p>
-          <form action="/contacts/<%= contact_id %>/destroy" method="post">
-            <button type="submit">Delete Contact</button>
-          </form>
+        <% if contact_info[:group_name] %>
+          <li>Group: <%= contact_info[:group_name] %></li>
+        <% end %>
+        <div>
           <a href="/contacts/<%= contact_id %>/edit">
             <button>Edit Contact</button>
           </a>
-        </p>
+          <form action="/contacts/<%= contact_id %>/destroy" method="post">
+            <button type="submit">Delete Contact</button>
+          </form>
+        </div>
       </ul>
     </li>
   <% end %>
