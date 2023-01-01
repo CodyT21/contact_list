@@ -6,15 +6,6 @@ require_relative '../contact_list'
 class CMSTest < Minitest::Test
   include Rack::Test::Methods
 
-  def create_contact(first, last, phone, email)
-    contact = {first_name: first, 
-               last_name: last, 
-               phone_number: phone.to_s, 
-               email_address: email
-              }
-    session[:contacts] << [contact]
-  end
-
   def session
     last_request.env['rack.session']
   end
@@ -79,5 +70,44 @@ class CMSTest < Minitest::Test
                         phone_number: '12345678901', email_address: 'emailemailcom'
                       }
     assert_includes last_response.body, 'Email Address must be a valid email address.'
+  end
+
+  def test_delete_contact
+    post '/contacts', { first_name: 'First', last_name: 'Last', 
+                        phone_number: '1234567890', email_address: 'email@email.com'
+                      }
+
+    post '/contacts/0/destroy'
+    assert_equal 302, last_response.status
+    assert_equal 'The contact has been deleted.', session[:message]
+  end
+
+  def test_update_contact_form
+    post '/contacts', { first_name: 'First', last_name: 'Last', 
+                        phone_number: '1234567890', email_address: 'email@email.com'
+                      }
+
+    get '/contacts/0/edit'
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, '<input'
+    assert_includes last_response.body, %q(<input type="submit")
+  end
+
+  def test_update_contact
+    post '/contacts', { first_name: 'First', last_name: 'Last', 
+                        phone_number: '1234567890', email_address: 'email@email.com'
+                      }
+
+    post '/contacts/0', { first_name: 'Newfirst', last_name: 'Newlast', 
+                          phone_number: '0987654321', email_address: 'newemail@email.com' 
+                        }
+    assert_equal 302, last_response.status
+    assert_equal 'The contact has been updated successfully.', session[:message]
+
+    get last_response['Location']
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, 'Newfirst Newlast'
+    assert_includes last_response.body, '0987654321'
+    assert_includes last_response.body, 'newemail@email.com'
   end
 end

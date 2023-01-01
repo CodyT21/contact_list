@@ -72,7 +72,7 @@ post '/contacts' do
   end
 end
 
-# delete contact fromn contact list
+# delete contact from contact list
 post '/contacts/:contact_id/destroy' do
   contact_id = params[:contact_id].to_i
   session[:contacts].delete_at(contact_id)
