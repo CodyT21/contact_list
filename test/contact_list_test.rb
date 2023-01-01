@@ -137,4 +137,37 @@ class CMSTest < Minitest::Test
     get last_response['Location']
     assert_includes last_response.body, '<li>Group: New Group</li>'
   end
+
+  def test_display_contact_groups
+    post '/contacts', { first_name: 'First', last_name: 'Last', 
+                        phone_number: '1234567890', email_address: 'email@email.com',
+                        group_name: ''
+                      }
+    post '/contacts', { first_name: 'First2', last_name: 'Last2', 
+                        phone_number: '1234567891', email_address: 'email2@email.com',
+                        group_name: 'New Group'
+                      }
+    get '/contacts'
+    assert_includes last_response.body, '<button>View All Contacts</button>'
+    assert_includes last_response.body, '<button>View Groups</button>'
+
+    get '/contacts/groups'
+    assert_includes last_response.body, '<button>New Group</button>'
+  end
+
+  def test_display_contact_from_group
+    post '/contacts', { first_name: 'First', last_name: 'Last', 
+                        phone_number: '1234567890', email_address: 'email@email.com',
+                        group_name: ''
+                      }
+    post '/contacts', { first_name: 'First2', last_name: 'Last2', 
+                        phone_number: '1234567891', email_address: 'email2@email.com',
+                        group_name: 'New Group'
+                      }
+
+    get '/contacts?group_name=New+Group'
+    assert_equal 200, last_response.status
+    refute_includes last_response.body, 'First Last'
+    assert_includes last_response.body, 'First2 Last2'
+  end
 end
