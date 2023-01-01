@@ -33,6 +33,10 @@ def valid_email?(email)
   email =~ /@.+\..+/
 end
 
+def sort_contacts_by_group(contacts, &block)
+  contacts.each { |contact| block.call(contact, session[:contacts].index(contact)) }
+end
+
 before do
   session[:contacts] ||= []
 end
@@ -117,4 +121,14 @@ post '/contacts/:contact_id' do
     session[:message] = 'The contact has been updated successfully.'
     redirect '/contacts'
   end
+end
+
+# render contacts group page
+get '/contacts/groups' do
+  contacts_with_groups = session[:contacts].select { |contact| contact[:group_name] }
+  @group_names = contacts_with_groups.each_with_object([]) do |contact, arr|
+    arr << contact[:group_name] unless arr.include?(contact[:group_name])
+  end
+
+  erb :contact_groups
 end

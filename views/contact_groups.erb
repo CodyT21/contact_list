@@ -1,0 +1,12 @@
+<h2>Contact Groups</h2>
+<p>Select a group to view its related contacts.</p>
+
+<dl> 
+  <% @group_names.each_with_index do |group_name, group_id| %>
+    <dd>
+      <a href="/contacts?group_name=<%= group_name %>">
+        <button><%= group_name %></button>
+      </a>
+    </dd>
+  <% end %>
+</dl>  

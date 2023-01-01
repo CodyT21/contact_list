@@ -1,24 +1,28 @@
 <ul style="list-style:none">
-  <% @contacts.each_with_index do |contact_info, contact_id| %>
-    <li>
-      <h4><%= contact_info[:first_name].capitalize + ' ' + contact_info[:last_name].capitalize %></h4>
-      <ul>
-        <li>Phone Number: <%=  contact_info[:phone_number] %></li>
-        <li>Email Address: <%= contact_info[:email_address] %></li>
-        <% if contact_info[:group_name] %>
-          <li>Group: <%= contact_info[:group_name] %></li>
-        <% end %>
-        <div>
-          <a href="/contacts/<%= contact_id %>/edit">
-            <button>Edit Contact</button>
-          </a>
-          <form action="/contacts/<%= contact_id %>/destroy" method="post">
-            <button type="submit">Delete Contact</button>
-          </form>
-        </div>
-      </ul>
-    </li>
+  <% sort_contacts_by_group(@contacts) do |contact_info, contact_id| %>
+    <% if params[:group_name] == contact_info[:group_name] || params[:group_name] == '' || !params[:group_name] %>
+      <li>
+        <h4><%= contact_info[:first_name].capitalize + ' ' + contact_info[:last_name].capitalize %></h4>
+        <ul>
+          <li>Phone Number: <%=  contact_info[:phone_number] %></li>
+          <li>Email Address: <%= contact_info[:email_address] %></li>
+          <% if contact_info[:group_name] %>
+            <li>Group: <%= contact_info[:group_name] %></li>
+          <% end %>
+          <div>
+            <a href="/contacts/<%= contact_id %>/edit">
+              <button>Edit Contact</button>
+            </a>
+            <form action="/contacts/<%= contact_id %>/destroy" method="post">
+              <button type="submit">Delete Contact</button>
+            </form>
+          </div>
+        </ul>
+      </li>
+    <% end %>
   <% end %>
 </ul>
 
-<a href="/contacts/new">New Contact</a>
+<a href="/contacts"><button>View All Contacts</button></a>
+<a href="/contacts/groups"><button>View Groups</button></a>
+<a href="/contacts/new"><button>New Contact</button></a>
