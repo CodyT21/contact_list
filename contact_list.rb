@@ -64,12 +64,11 @@ post '/contacts' do
   email = params[:email_address].strip
   group = params[:group_name] == '' ? nil : params[:group_name]
 
-  contact = { first_name: fname, last_name: lname, 
+  contact = { first_name: fname, last_name: lname,
               phone_number: phone, email_address: email,
-              group_name: group
-            }
+              group_name: group }
   error = valid_contact?(contact)
-  
+
   if error
     session[:message] = error
     erb :new_contact
@@ -107,12 +106,11 @@ post '/contacts/:contact_id' do
   email = params[:email_address].strip
   group = params[:group_name] == '' ? nil : params[:group_name]
 
-  updated_contact = { first_name: fname, last_name: lname, 
+  updated_contact = { first_name: fname, last_name: lname,
                       phone_number: phone, email_address: email,
-                      group_name: group
-                    }
+                      group_name: group }
   error = valid_contact?(updated_contact)
-  
+
   if error
     session[:message] = error
     erb :edit_contact

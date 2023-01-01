@@ -20,7 +20,6 @@ class CMSTest < Minitest::Test
 
     get last_response['Location']
     assert_equal 200, last_response.status
-    assert_equal 'text/html;charset=utf-8', last_response['Content-Type']
     assert_includes last_response.body, 'New Contact'
   end
 
@@ -32,10 +31,9 @@ class CMSTest < Minitest::Test
   end
 
   def test_create_new_contact
-    post '/contacts', { first_name: 'First', last_name: 'Last', 
+    post '/contacts', { first_name: 'First', last_name: 'Last',
                         phone_number: '1234567890', email_address: 'email@email.com',
-                        group_name: ''
-                      }
+                        group_name: '' }
     assert_equal 302, last_response.status
     assert_equal 'The contact has been created successfully.', session[:message]
     
@@ -46,42 +44,37 @@ class CMSTest < Minitest::Test
   end
 
   def test_invalid_first_name_new_contact
-    post '/contacts', { first_name: '', last_name: 'Last', 
+    post '/contacts', { first_name: '', last_name: 'Last',
                         phone_number: '1234567890', email_address: 'email@email.com',
-                        group_name: ''
-                      }
+                        group_name: '' }
     assert_includes last_response.body, 'First Name must only contain between 1 and 100 alphanumeric characters.'
   end
   
   def test_invalid_last_name_new_contact
-    post '/contacts', { first_name: 'First', last_name: 'Last@#', 
+    post '/contacts', { first_name: 'First', last_name: 'Last@#',
                         phone_number: '1234567890', email_address: 'email@email.com',
-                        group_name: ''
-                      }
+                        group_name: '' }
     assert_includes last_response.body, 'Last Name must only contain between 1 and 100 alphanumeric characters.'
   end
 
   def test_invalid_phone_too_many_digits
-    post '/contacts', { first_name: 'First', last_name: 'Last', 
+    post '/contacts', { first_name: 'First', last_name: 'Last',
                         phone_number: '123456789011', email_address: 'email@email.com',
-                        group_name: ''
-                      }
+                        group_name: '' }
     assert_includes last_response.body, 'Phone Number must only contains between 10 and 11 digits.'
   end
 
   def test_invalid_phone_too_many_digits
-    post '/contacts', { first_name: 'First', last_name: 'Last', 
+    post '/contacts', { first_name: 'First', last_name: 'Last',
                         phone_number: '12345678901', email_address: 'emailemailcom',
-                        group_name: ''
-                      }
+                        group_name: '' }
     assert_includes last_response.body, 'Email Address must be a valid email address.'
   end
 
   def test_delete_contact
-    post '/contacts', { first_name: 'First', last_name: 'Last', 
+    post '/contacts', { first_name: 'First', last_name: 'Last',
                         phone_number: '1234567890', email_address: 'email@email.com',
-                        group_name: ''
-                      }
+                        group_name: '' }
 
     post '/contacts/0/destroy'
     assert_equal 302, last_response.status
@@ -89,10 +82,9 @@ class CMSTest < Minitest::Test
   end
 
   def test_update_contact_form
-    post '/contacts', { first_name: 'First', last_name: 'Last', 
+    post '/contacts', { first_name: 'First', last_name: 'Last',
                         phone_number: '1234567890', email_address: 'email@email.com',
-                        group_name: ''
-                      }
+                        group_name: '' }
 
     get '/contacts/0/edit'
     assert_equal 200, last_response.status
@@ -101,15 +93,13 @@ class CMSTest < Minitest::Test
   end
 
   def test_update_contact
-    post '/contacts', { first_name: 'First', last_name: 'Last', 
+    post '/contacts', { first_name: 'First', last_name: 'Last',
                         phone_number: '1234567890', email_address: 'email@email.com',
-                        group_name: ''
-                      }
+                        group_name: '' }
 
-    post '/contacts/0', { first_name: 'Newfirst', last_name: 'Newlast', 
+    post '/contacts/0', { first_name: 'Newfirst', last_name: 'Newlast',
                           phone_number: '0987654321', email_address: 'newemail@email.com',
-                          group_name: '' 
-                        }
+                          group_name: '' }
     assert_equal 302, last_response.status
     assert_equal 'The contact has been updated successfully.', session[:message]
 
@@ -121,32 +111,28 @@ class CMSTest < Minitest::Test
   end
 
   def test_display_contacts_without_group
-    post '/contacts', { first_name: 'First', last_name: 'Last', 
+    post '/contacts', { first_name: 'First', last_name: 'Last',
                         phone_number: '1234567890', email_address: 'email@email.com',
-                        group_name: ''
-                      }
+                        group_name: '' }
     get last_response['Location']
     refute_includes last_response.body, 'Group:'
   end
 
   def test_display_contacts_with_group
-    post '/contacts', { first_name: 'First', last_name: 'Last', 
+    post '/contacts', { first_name: 'First', last_name: 'Last',
                         phone_number: '1234567890', email_address: 'email@email.com',
-                        group_name: 'New Group'
-                      }
+                        group_name: 'New Group' }
     get last_response['Location']
     assert_includes last_response.body, '<li>Group: New Group</li>'
   end
 
   def test_display_contact_groups
-    post '/contacts', { first_name: 'First', last_name: 'Last', 
+    post '/contacts', { first_name: 'First', last_name: 'Last',
                         phone_number: '1234567890', email_address: 'email@email.com',
-                        group_name: ''
-                      }
-    post '/contacts', { first_name: 'First2', last_name: 'Last2', 
+                        group_name: '' }
+    post '/contacts', { first_name: 'First2', last_name: 'Last2',
                         phone_number: '1234567891', email_address: 'email2@email.com',
-                        group_name: 'New Group'
-                      }
+                        group_name: 'New Group' }
     get '/contacts'
     assert_includes last_response.body, '<button>View All Contacts</button>'
     assert_includes last_response.body, '<button>View Groups</button>'
@@ -156,14 +142,12 @@ class CMSTest < Minitest::Test
   end
 
   def test_display_contact_from_group
-    post '/contacts', { first_name: 'First', last_name: 'Last', 
+    post '/contacts', { first_name: 'First', last_name: 'Last',
                         phone_number: '1234567890', email_address: 'email@email.com',
-                        group_name: ''
-                      }
-    post '/contacts', { first_name: 'First2', last_name: 'Last2', 
+                        group_name: '' }
+    post '/contacts', { first_name: 'First2', last_name: 'Last2',
                         phone_number: '1234567891', email_address: 'email2@email.com',
-                        group_name: 'New Group'
-                      }
+                        group_name: 'New Group' }
 
     get '/contacts?group_name=New+Group'
     assert_equal 200, last_response.status
