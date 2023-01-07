@@ -37,6 +37,23 @@ class DatabasePeristance
     end
   end
 
+  def create_new_contact(first_name, last_name, phone, email, group=nil)
+  end
+
+  def update_contact(id, first_name, last_name, phone, email, group=nil) 
+  end
+
+  def delete_contact_at_id(id)
+    sql = "DELETE FROM contacts WHERE id = $1"
+    query(sql, id)
+  end
+
+  def all_group_names
+    sql = "SELECT DISTINCT group_name FROM groups WHERE group_name IS NOT NULL"
+    result = query(sql)
+    result.map { |tuple| tuple['group_name']}
+  end
+
   private
 
   def tuple_to_contact_hash(tuple)

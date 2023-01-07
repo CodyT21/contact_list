@@ -1,5 +1,4 @@
 require 'sinatra'
-require 'sinatra/reloader'
 require 'tilt/erubis'
 
 require_relative 'database_persistance'
@@ -9,6 +8,11 @@ configure do
   set :session_secret, 'secret'
 
   set :erb, :escape_html => true
+end
+
+configure(:development) do
+  require "sinatra/reloader"
+  also_reload 'database_persistance.rb' if development?
 end
 
 def valid_contact?(*contact_info)
@@ -35,12 +39,11 @@ def valid_email?(email)
   email =~ /@.+\..+/
 end
 
-def sort_contacts_by_group(contacts, &block)
+def sort_contacts(contacts, &block)
   contacts.each { |contact| block.call(contact) }
 end
 
 before do
-  # session[:contacts] ||= []
   @storage = DatabasePeristance.new(logger)
 end
 

@@ -1,5 +1,5 @@
 <ul style="list-style:none">
-  <% sort_contacts_by_group(@contacts) do |contact| %>
+  <% sort_contacts(@contacts) do |contact| %>
     <% if params[:group_name] == contact[:group_name] || params[:group_name] == '' || !params[:group_name] %>
       <li>
         <h4><%= contact[:first_name].capitalize + ' ' + contact[:last_name].capitalize %></h4>
