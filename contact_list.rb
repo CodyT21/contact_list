@@ -15,7 +15,7 @@ configure(:development) do
   also_reload 'database_persistance.rb' if development?
 end
 
-def valid_contact?(*contact_info)
+def valid_contact?(first_name, last_name, phone_number, email_address)
   if !valid_name?(first_name)
     'First Name must only contain between 1 and 100 alphanumeric characters.'
   elsif !valid_name?(last_name)
