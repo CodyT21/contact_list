@@ -50,9 +50,8 @@ get '/' do
 end
 
 get '/contacts' do
-  # @contacts = session[:contacts]
   @contacts = @storage.all_contacts
-  erb :index
+  erb :contacts
 end
 
 # render new contact page
