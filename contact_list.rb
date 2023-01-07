@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'tilt/erubis'
-require 'pg'
 
 require_relative 'database_persistance'
 
@@ -12,7 +11,7 @@ configure do
   set :erb, :escape_html => true
 end
 
-def valid_contact?(contact_info*)
+def valid_contact?(*contact_info)
   if !valid_name?(first_name)
     'First Name must only contain between 1 and 100 alphanumeric characters.'
   elsif !valid_name?(last_name)
@@ -37,7 +36,7 @@ def valid_email?(email)
 end
 
 def sort_contacts_by_group(contacts, &block)
-  contacts.each { |contact| block.call(contact, session[:contacts].index(contact)) }
+  contacts.each { |contact| block.call(contact) }
 end
 
 before do

@@ -1,0 +1,28 @@
+<ul style="list-style:none">
+  <% sort_contacts_by_group(@contacts) do |contact| %>
+    <% if params[:group_name] == contact[:group_name] || params[:group_name] == '' || !params[:group_name] %>
+      <li>
+        <h4><%= contact[:first_name].capitalize + ' ' + contact[:last_name].capitalize %></h4>
+        <ul>
+          <li>Phone Number: <%=  contact[:phone_number] %></li>
+          <li>Email Address: <%= contact[:email_address] %></li>
+          <% if contact[:group_name] %>
+            <li>Group: <%= contact[:group_name] %></li>
+          <% end %>
+          <div>
+            <a href="/contacts/<%= contact[:id] %>/edit">
+              <button>Edit Contact</button>
+            </a>
+            <form action="/contacts/<%= contact[:id] %>/destroy" method="post">
+              <button type="submit">Delete Contact</button>
+            </form>
+          </div>
+        </ul>
+      </li>
+    <% end %>
+  <% end %>
+</ul>
+
+<a href="/contacts"><button>View All Contacts</button></a>
+<a href="/contacts/groups"><button>View Groups</button></a>
+<a href="/contacts/new"><button>New Contact</button></a>

@@ -8,6 +8,6 @@ CREATE TABLE contacts (
 
 CREATE TABLE groups (
   id serial PRIMARY KEY,
-  group_name varchar(100) NOT NULL,
+  group_name varchar(100) DEFAULT NULL,
   contact_id integer NOT NULL REFERENCES contacts (id) ON DELETE CASCADE
 );
